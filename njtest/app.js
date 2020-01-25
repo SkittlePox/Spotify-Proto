@@ -105,11 +105,18 @@ app.get('/callback', function(req, res) {
                 //
                 function dealto(error, response, body){
                     // console.log(body)
-                    body = body.items.map(x => x.name + " by " + x.artist)
+                    body = body.items.map(x => [x.name, x.popularity])
                     // console.log(response)
                     console.log(body)
                     // console.log(count)
-                    count = count + body.size
+                    // count = count + body.size
+                    var jsonData = JSON.stringify(body);
+                    var fs = require('fs');
+                    fs.writeFile("test.txt", jsonData, function(err) {
+                        if (err) {
+                            console.log(err);
+                        }
+                    });
                 }
 
                 zeep = {
