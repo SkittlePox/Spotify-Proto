@@ -37,7 +37,7 @@ app.get('/login', function(req, res) {
     res.cookie(stateKey, state);
 
     // your application requests authorization
-    var scope = 'user-read-private user-read-email playlist-read-private user-library-read';
+    var scope = 'user-read-private user-read-email playlist-read-private user-library-read user-top-read';
     res.redirect('https://accounts.spotify.com/authorize?' +
         querystring.stringify({
             response_type: 'code',
@@ -85,23 +85,42 @@ app.get('/callback', function(req, res) {
                     refresh_token = body.refresh_token;
 
                 var count = 0
-                for (var i = 0; i < 2; i++) {
-                    var options3 = {
-                        url: 'https://api.spotify.com/v1/me/tracks?limit=50&offset='+i,
-                        headers: {
-                            'Authorization': 'Bearer ' + access_token
-                        },
-                        json: true
-                    };
-                    function dealt(error, response, body){
-                        body = body.items.map(x => x.track.id)
-                        // console.log(response)
-                        console.log(body)
-                        console.log(count)
-                        count = count + body.size
-                    }
-                    request.get(options3, dealt, false);
+                // for (var i = 0; i < 2; i++) {
+                //     var options3 = {
+                //         url: 'https://api.spotify.com/v1/me/tracks?limit=50&offset='+i,
+                //         headers: {
+                //             'Authorization': 'Bearer ' + access_token
+                //         },
+                //         json: true
+                //     };
+                //     function dealt(error, response, body){
+                //         body = body.items.map(x => x.track.name)
+                //         // console.log(response)
+                //         console.log(body)
+                //         console.log(count)
+                //         count = count + body.size
+                //     }
+                //     request.get(options3, dealt, false);
+                // }
+                //
+                function dealto(error, response, body){
+                    // console.log(body)
+                    body = body.items.map(x => x.name + " by " + x.artist)
+                    // console.log(response)
+                    console.log(body)
+                    // console.log(count)
+                    count = count + body.size
                 }
+
+                zeep = {
+                    url: 'https://api.spotify.com/v1/me/top/tracks?limit=50',
+                    headers: {
+                        'Authorization': 'Bearer ' + access_token
+                    },
+                    json: true
+                };
+
+                request.get(zeep, dealto, false)
 
                 console.log(count)
 
