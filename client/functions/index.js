@@ -37,7 +37,8 @@ app.post('/newUser', (req, res) => {
     name: req.body.name,
     email: req.body.email,
     artists: req.body.artists || "",
-    tracks: req.body.tracks || "",
+    allTracks: req.body.allTracks || "",
+    topTracks: req.body.topTracks || "",
     matches: req.body.matches || "",
     uniqueness: req.body.uniqueness || 0
   };
