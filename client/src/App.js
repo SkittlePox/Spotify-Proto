@@ -1,14 +1,10 @@
 import React from 'react';
+import Routes from './Routes';
 
-
-function App() {
+const App = () => {
   return (
-    <div className="App">
-      <button onClick={() => window.location = 'http://localhost:8888/login'}>
-        Sign in
-      </button>
-    </div>
-  );
+    <Routes />
+  )
 }
 
 export default App;
